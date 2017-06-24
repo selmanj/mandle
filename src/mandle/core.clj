@@ -63,6 +63,32 @@
                             mandlebrot-seq-idxed))
         max-iterations)))
 
+(defn interpolate-points
+  [a b n]
+  (if (< n 2)
+    (throw (ex-info "Can't interpolate less than two points"
+                    {:n n}))
+    (let [step (/ (- b a)
+                  (dec n))]
+      (conj (into [] (take (dec n) (range a b step))) b))))
+
+(defn interpolate-plane
+  [[min_a max_a] [min_b max_b] n_a n_b]
+  (for [b_p (interpolate-points min_b max_b n_b)
+        a_p (interpolate-points min_a max_a n_a)]
+    [a_p b_p]))
+
+(defn print-mandlebrot
+  [[min_x max_x] [min_y max_y] n_x n_y iters]
+  (doseq [chars (partition n_x (for [p (map #(mandle-escape-iters % iters)
+                                            (interpolate-plane [min_x max_x] [min_y max_y] n_x n_y))]
+                                 (if (= iters p)
+                                   " "
+                                   "#")))]
+    (println (apply str chars))))
+
+(print-mandlebrot [-2.5 1] [-1 1] 80 40 1000)
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
