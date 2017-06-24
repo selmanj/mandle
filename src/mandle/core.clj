@@ -41,11 +41,13 @@
       b0)])
 
 (defn mandlebrot-seq [c]
-  "Given a complex number (represented as a two-element seq), returns a lazy seq of all iterations of the mandlebrot set-defining function."
+  "Given a complex number (represented as a two-element seq), returns a lazy seq
+  of all iterations of the mandlebrot set-defining function."
   (iterate (partial mandlebrot c) [0 0]))
 
 (defn escaped? [c]
-  "Check whether or not a complex number is considered 'escaped' (e.g. the number is not part of the mandlebrot set)."
+  "Check whether or not a complex number is considered 'escaped' (e.g. the
+  number is not part of the mandlebrot set)."
   (let [[a b] c]
     (>= (+ (square a)
            (square b))
