@@ -60,7 +60,7 @@
   (let [mandlebrot-seq-idxed (map vector
                                   (range 0 (inc max-iterations))
                                   (mandlebrot-seq c))]
-    (or (ffirst (drop-while (fn [[idx c]]
+    (or (ffirst (drop-while (fn [[_ c]]
                               (not (escaped? c)))
                             mandlebrot-seq-idxed))
         max-iterations)))
@@ -115,5 +115,5 @@
     (println (apply str chars))))
 
 (defn -main
-  [& args]
+  [& _]
   (print-mandlebrot [-2.5 1] [-1 1] 160 40 1000))
