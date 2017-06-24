@@ -68,8 +68,8 @@
   (if (< n 2)
     (throw (ex-info "Can't interpolate less than two points"
                     {:n n}))
-    (let [step (/ (- b a)
-                  (dec n))]
+    (let [step (double (/ (- b a)
+                          (dec n)))]
       (conj (into [] (take (dec n) (range a b step))) b))))
 
 (defn interpolate-plane
@@ -87,9 +87,6 @@
                                    "#")))]
     (println (apply str chars))))
 
-(print-mandlebrot [-2.5 1] [-1 1] 80 40 1000)
-
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (print-mandlebrot [-2.5 1] [-1 1] 160 40 1000))
