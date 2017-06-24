@@ -77,17 +77,41 @@
 
 (defn interpolate-plane
   [[min_a max_a] [min_b max_b] n_a n_b]
+  "Given two min/max sets of values and two counts, interpolate a
+  plane (inclusive)."
   (for [b_p (interpolate min_b max_b n_b)
         a_p (interpolate min_a max_a n_a)]
     [a_p b_p]))
 
+(defn iteration-color [cs max v]
+  "Find the color of an iteration."
+  ;; TODO this used to be used for linear interpolation but should probably
+  ;; reflect what is actually being done via a histogram.
+  (let [idx (int (* (dec (count cs))
+                    (/ v max)))]
+    (nth cs idx)))
+
+(def mandle-color-order
+  "Simple order of colors to render, from small num of iterations to large."
+  [:blue :cyan :green :magenta :red :yellow :white])
+
 (defn print-mandlebrot
-  [[min_x max_x] [min_y max_y] n_x n_y iters]
-  (doseq [chars (partition n_x (for [p (map #(mandle-escape-iters % iters)
-                                            (interpolate-plane [min_x max_x] [min_y max_y] n_x n_y))]
-                                 (if (= iters p)
-                                   " "
-                                   "#")))]
+  [[min_x max_x] [min_y max_y] n_x n_y max-iters]
+  ;; TODO this code got away from me! needs cleaning up
+  (doseq [chars (partition n_x (let [iters (map #(mandle-escape-iters % max-iters)
+                                                (interpolate-plane [min_x max_x] [min_y max_y] n_x n_y))
+                                     hist (dissoc (frequencies iters) max-iters)
+                                     total (reduce + (vals hist))]
+                                 (for [iter iters]
+                                   (let [hist-sum (->> hist
+                                                       keys
+                                                       (filter #(< % iter))
+                                                       (map hist)
+                                                       (reduce +))
+                                         color (if (= iter max-iters)
+                                                 "black"
+                                                 (name (iteration-color mandle-color-order total hist-sum)))]
+                                     (format-color (str "${" color "}#"))))))]
     (println (apply str chars))))
 
 (defn -main
