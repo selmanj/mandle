@@ -65,8 +65,9 @@
                             mandlebrot-seq-idxed))
         max-iterations)))
 
-(defn interpolate-points
-  [a b n]
+(defn interpolate [a b n]
+  "Given two numbers a and b, return n number of points interpolating between a
+  and b (inclusive)."
   (if (< n 2)
     (throw (ex-info "Can't interpolate less than two points"
                     {:n n}))
@@ -76,8 +77,8 @@
 
 (defn interpolate-plane
   [[min_a max_a] [min_b max_b] n_a n_b]
-  (for [b_p (interpolate-points min_b max_b n_b)
-        a_p (interpolate-points min_a max_a n_a)]
+  (for [b_p (interpolate min_b max_b n_b)
+        a_p (interpolate min_a max_a n_a)]
     [a_p b_p]))
 
 (defn print-mandlebrot
