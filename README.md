@@ -1,36 +1,19 @@
 # mandle
 
-FIXME: description
+Just a simple project for me to play around with mandlebrot visualizations in
+Clojure. A friend showed me his Python implementation and I was curious what a
+Clojure one would look like.
 
-## Installation
-
-Download from http://example.com/FIXME.
+Currently haven't gotten any farther than colorized ascii
 
 ## Usage
 
-FIXME: explanation
+Install Leiningen and run with:
 
-    $ java -jar mandle-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
+    $ lein run
 
 ## Examples
 
-...
+Example output:
 
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2017 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+![Example Output](/images/example.png)
